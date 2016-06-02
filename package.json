@@ -2,9 +2,10 @@
   "name": "forcelayout.cc",
   "version": "1.0.0",
   "description": "C++ module for 3d force based graph layout",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rm -rf build",
+    "configure": "ngyp gyp/test.gyp --depth=. -f make --generator-output=build --toplevel-dir=.",
+    "test": "make --directory=build && build/out/Default/test "
   },
   "keywords": [
     "graph",
@@ -16,5 +17,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/anvaka/forcelayout.cc"
+  },
+  "dependencies": {
+    "nangraph.cpp": "^2.0.0",
+    "quadtree.cc": "^1.0.0"
+  },
+  "devDependencies": {
+    "catch.cc": "^7.0.0"
   }
 }
