@@ -3,5 +3,6 @@
   'dependencies': [
     "<!(node -e \"console.log(require.resolve('nangraph.cpp/gyp/nangraph.cc.gyp') + ':*')\")",
     "<!(node -e \"console.log(require.resolve('quadtree.cc/gyp/quadtree.cc.gyp') + ':*')\")",
+    "<!(node -e \"console.log(require.resolve('random.cc/gyp/random.cc.gyp') + ':*')\")",
   ],
 }

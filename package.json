@@ -20,9 +20,10 @@
   },
   "dependencies": {
     "nangraph.cpp": "^2.0.0",
-    "quadtree.cc": "^1.0.0"
+    "quadtree.cc": "^2.0.0"
   },
   "devDependencies": {
-    "catch.cc": "^7.0.0"
+    "catch.cc": "^7.0.0",
+    "ngyp": "^1.0.1"
   }
 }
