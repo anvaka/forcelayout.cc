@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "nangraph.cpp": "^2.0.0",
-    "quadtree.cc": "^2.0.0"
+    "quadtree.cc": "^3.0.0"
   },
   "devDependencies": {
     "catch.cc": "^7.0.0",
