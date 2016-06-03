@@ -56,11 +56,10 @@ void ForceLayout::accumulate() {
 }
 
 double ForceLayout::integrate() {
-  LayoutSettings &settings = *tree.getSettings();
   double dx = 0, tx = 0,
   dy = 0, ty = 0,
   dz = 0, tz = 0,
-  timeStep = settings.timeStep;
+  timeStep = _settings.timeStep;
 
 #pragma omp parallel for
   for (auto body : _bodies) {
@@ -96,15 +95,13 @@ double ForceLayout::integrate() {
 }
 
 void ForceLayout::updateDragForce(Body *body) {
-  LayoutSettings &settings = *tree.getSettings();
-  body->force.x -= settings.dragCoeff * body->velocity.x;
-  body->force.y -= settings.dragCoeff * body->velocity.y;
-  body->force.z -= settings.dragCoeff * body->velocity.z;
+  body->force.x -= _settings.dragCoeff * body->velocity.x;
+  body->force.y -= _settings.dragCoeff * body->velocity.y;
+  body->force.z -= _settings.dragCoeff * body->velocity.z;
 }
 
 void ForceLayout::updateSpringForce(Body *source) {
   Body *body1 = source;
-  LayoutSettings &settings = *tree.getSettings();
 
   for (auto body2 : source->springs) {
     double dx = body2->pos.x - body1->pos.x;
@@ -119,8 +116,8 @@ void ForceLayout::updateSpringForce(Body *source) {
       r = sqrt(dx * dx + dy * dy + dz * dz);
     }
 
-    double d = r - settings.springLength;
-    double coeff = settings.springCoeff * d / r;
+    double d = r - _settings.springLength;
+    double coeff = _settings.springCoeff * d / r;
 
     body1->force.x += coeff * dx;
     body1->force.y += coeff * dy;
