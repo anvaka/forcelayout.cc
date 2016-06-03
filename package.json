@@ -5,6 +5,7 @@
   "scripts": {
     "clean": "rm -rf build",
     "configure": "ngyp gyp/test.gyp --depth=. -f make --generator-output=build --toplevel-dir=.",
+    "xcode": "ngyp gyp/test.gyp --depth=. -f xcode --generator-output=build --toplevel-dir=.",
     "test": "make --directory=build && build/out/Default/test "
   },
   "keywords": [
