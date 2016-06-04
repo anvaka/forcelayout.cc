@@ -2,7 +2,7 @@
 
 #include "catch.hpp"
 #include "forcelayout.cc/layout.h"
-#include "nangraph/graph.h"
+#include "nangraph.cc/graph.h"
 #include "quadtree.cc/quadtree.h"
 
 TEST_CASE("it can make a step", "[layout]" ) {

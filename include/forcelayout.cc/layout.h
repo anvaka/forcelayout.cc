@@ -11,7 +11,7 @@
 
 #include <vector>
 #include <unordered_map>
-#include "nangraph/graph.h"
+#include "nangraph.cc/graph.h"
 #include "random.cc/random.h"
 #include "quadtree.cc/quadtree.h"
 
