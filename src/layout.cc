@@ -20,7 +20,6 @@ void ForceLayout::initBodies() {
   graph.forEachNode(initBody);
 
   // Now that we have bodies, let's add links:
-  Body *fromBody = nullptr;
   LinkCallback initSpring = [=](const std::size_t& fromId, const std::size_t& toId, const std::size_t& linkId) -> bool {
     // TODO: Add verification
     _nodeIdToBody[fromId]->springs.push_back(_nodeIdToBody[toId]);
