@@ -70,8 +70,8 @@ class ForceLayout {
 public:
   ForceLayout(Graph &g, LayoutSettings settings) :
     graph(g),
-    random(42),
-    _settings(settings) {
+    _settings(settings),
+    random(42) {
     initBodies();
   }
   
@@ -94,6 +94,8 @@ public:
    * null if no such node is found.
    */
   Body *getBody(const std::size_t &nodeId);
+  
+  QuadTree *getTree() { return &tree; }
 };
 
 #endif
