@@ -1,5 +1,7 @@
 #include "forcelayout.cc/layout.h"
 
+#include <iostream>
+
 double ForceLayout::step() {
   accumulate();
 
@@ -55,75 +57,47 @@ void ForceLayout::accumulate() {
 }
 
 double ForceLayout::integrate() {
-  double dx = 0, tx = 0,
-  dy = 0, ty = 0,
-  dz = 0, tz = 0,
-  timeStep = _settings.timeStep;
+  double timeStep = _settings.timeStep;
+  double totalV = 0;
 
 #pragma omp parallel for
   for (auto body : _bodies) {
     double coeff = timeStep / body->mass;
 
-    body->velocity.x += coeff * body->force.x;
-    body->velocity.y += coeff * body->force.y;
-    body->velocity.z += coeff * body->force.z;
+    body->velocity.addScaledVector(body->force, coeff);
 
-    double vx = body->velocity.x,
-    vy = body->velocity.y,
-    vz = body->velocity.z,
-    v = sqrt(vx * vx + vy * vy + vz * vz);
+    double v = body->velocity.length();
+    totalV += v;
 
-    if (v > 1) {
-      body->velocity.x = vx / v;
-      body->velocity.y = vy / v;
-      body->velocity.z = vz / v;
-    }
+    if (v > 1) body->velocity.normalize();
 
-    dx = timeStep * body->velocity.x;
-    dy = timeStep * body->velocity.y;
-    dz = timeStep * body->velocity.z;
-
-    body->pos.x += dx;
-    body->pos.y += dy;
-    body->pos.z += dz;
-
-    tx += abs(dx); ty += abs(dy); tz += abs(dz);
+    body->pos.addScaledVector(body->velocity, timeStep);
   }
 
-  return (tx * tx + ty * ty + tz * tz)/_bodies.size();
+  return totalV/_bodies.size();
 }
 
 void ForceLayout::updateDragForce(Body *body) {
-  body->force.x -= _settings.dragCoeff * body->velocity.x;
-  body->force.y -= _settings.dragCoeff * body->velocity.y;
-  body->force.z -= _settings.dragCoeff * body->velocity.z;
+  body->force.addScaledVector(body->velocity, -_settings.dragCoeff);
 }
 
 void ForceLayout::updateSpringForce(Body *source) {
   Body *body1 = source;
 
   for (auto body2 : source->springs) {
-    double dx = body2->pos.x - body1->pos.x;
-    double dy = body2->pos.y - body1->pos.y;
-    double dz = body2->pos.z - body1->pos.z;
-    double r = sqrt(dx * dx + dy * dy + dz * dz);
+    Vector3 dist = body2->pos - body1->pos;
+    double r = dist.length();
 
     if (r == 0) {
-      dx = (random.nextDouble() - 0.5) / 50;
-      dy = (random.nextDouble() - 0.5) / 50;
-      dz = (random.nextDouble() - 0.5) / 50;
-      r = sqrt(dx * dx + dy * dy + dz * dz);
+      dist.set((random.nextDouble() - 0.5) / 50,
+               (random.nextDouble() - 0.5) / 50,
+               (random.nextDouble() - 0.5) / 50);
+      r = dist.length();
     }
 
-    double d = r - _settings.springLength;
-    double coeff = _settings.springCoeff * d / r;
+    double coeff = _settings.springCoeff * (r - _settings.springLength) / r;
 
-    body1->force.x += coeff * dx;
-    body1->force.y += coeff * dy;
-    body1->force.z += coeff * dz;
-
-    body2->force.x -= coeff * dx;
-    body2->force.y -= coeff * dy;
-    body2->force.z -= coeff * dz;
+    body1->force.addScaledVector(dist, coeff);
+    body2->force.addScaledVector(dist, -coeff);
   }
 }
