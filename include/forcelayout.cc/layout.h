@@ -15,6 +15,8 @@
 #include "random.cc/random.h"
 #include "quadtree.cc/quadtree.h"
 
+class BodyNotFoundException: public exception {};
+
 struct LayoutSettings {
   double stableThreshold;
   double gravity;
@@ -82,7 +84,12 @@ public:
       delete i;
     }
   }
-  
+
+  /**
+   * Sets a position for body. If no such body exist, throws BodyNotFoundException.
+   */
+  void setPosition(const std::size_t &bodyId, const Vector3 &position);
+
   /**
    * Performs one iteration of force layout. Returns total movement performed
    * during that step.

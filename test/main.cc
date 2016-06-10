@@ -14,6 +14,17 @@ TEST_CASE("it can make a step", "[layout]" ) {
   REQUIRE(movement > 0);
 }
 
+TEST_CASE("it can set body position", "[layout]" ) {
+  Graph graph;
+  graph.addLink(1, 2);
+
+  ForceLayout layout(graph);
+  Vector3 position(0, 1, 0);
+  layout.setPosition(1, position);
+  auto body = layout.getBody(1);
+  REQUIRE(body->pos == position);
+}
+
 TEST_CASE("it can return a body", "[layout]" ) {
   Graph graph;
   graph.addLink(1, 2);

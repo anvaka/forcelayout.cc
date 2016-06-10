@@ -9,6 +9,14 @@ double ForceLayout::step() {
   return totalMovement;
 }
 
+void ForceLayout::setPosition(const std::size_t &bodyId, const Vector3 &position) {
+  auto body = getBody(bodyId);
+  if (!body) {
+    throw BodyNotFoundException();
+  }
+  body->pos.set(position);
+}
+
 void ForceLayout::initBodies() {
   _bodies.reserve(graph.getNodesCount());
 
