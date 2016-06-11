@@ -11,6 +11,8 @@
 
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
+
 #include "nangraph.cc/graph.h"
 #include "random.cc/random.h"
 #include "quadtree.cc/quadtree.h"
@@ -64,6 +66,7 @@ class ForceLayout {
   void updateDragForce(Body *body);
   void updateSpringForce(Body *source);
   void initBodies();
+  void setInitialPositions();
   
   static LayoutSettings makeDefaultSettings() {
     LayoutSettings settings;
