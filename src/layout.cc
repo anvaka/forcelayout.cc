@@ -82,9 +82,11 @@ void ForceLayout::setInitialPositions() {
 
 void ForceLayout::accumulate() {
   tree.insertBodies(_bodies);
+  auto bodiesCount = _bodies.size();
 
-  #pragma omp parallel for
-  for (auto body: _bodies) {
+#pragma omp parallel for
+  for (std::size_t i = 0; i < bodiesCount; ++i) {
+    auto body = _bodies[i];
     body->force.reset();
 
     tree.updateBodyForce(body);
@@ -92,7 +94,8 @@ void ForceLayout::accumulate() {
   }
 
 #pragma omp parallel for
-  for (auto body: _bodies) {
+  for (std::size_t i = 0; i < bodiesCount; ++i) {
+    auto body = _bodies[i];
     updateSpringForce(body);
   }
 
@@ -101,9 +104,11 @@ void ForceLayout::accumulate() {
 double ForceLayout::integrate() {
   double timeStep = _settings.timeStep;
   double totalV = 0;
+  auto bodiesCount = _bodies.size();
 
 #pragma omp parallel for
-  for (auto body : _bodies) {
+  for (std::size_t i = 0; i < bodiesCount; ++i) {
+    auto body = _bodies[i];
     double coeff = timeStep / body->mass;
 
     body->velocity.addScaledVector(body->force, coeff);
