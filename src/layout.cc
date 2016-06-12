@@ -63,7 +63,7 @@ void ForceLayout::setInitialPositions() {
             });
 
   for (auto body : _bodies){
-    Vector3 base(0, 0, 0);
+    Vector3 base;
     for (auto other: body->springs) {
       base.add(other->pos);
     }
@@ -73,9 +73,10 @@ void ForceLayout::setInitialPositions() {
     }
 
     int springLength = _settings.springLength;
-    Vector3 offset(springLength * (random.nextDouble() - 0.5),
-                   springLength * (random.nextDouble() - 0.5),
-                   springLength * (random.nextDouble() - 0.5));
+    Vector3 offset;
+    for (int i = 0; i < Vector3::size; ++i) {
+      offset.coord[i] = springLength * (random.nextDouble() - 0.5);
+    }
     body->pos.set(base)->add(offset);
   }
 }
@@ -136,9 +137,9 @@ void ForceLayout::updateSpringForce(Body *source) {
     double r = dist.length();
 
     if (r == 0) {
-      dist.set((random.nextDouble() - 0.5) / 50,
-               (random.nextDouble() - 0.5) / 50,
-               (random.nextDouble() - 0.5) / 50);
+      for (int i = 0; i < Vector3::size; ++i) {
+        dist.coord[i] = (random.nextDouble() - 0.5) / 50;
+      }
       r = dist.length();
     }
 
