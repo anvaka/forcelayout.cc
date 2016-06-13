@@ -20,8 +20,8 @@
     "url": "https://github.com/anvaka/forcelayout.cc"
   },
   "dependencies": {
-    "nangraph.cc": "^3.0.0",
-    "quadtree.cc": "^4.0.0",
+    "nangraph.cc": "^3.1.0",
+    "quadtree.cc": "^5.0.0",
     "random.cc": "^3.0.0"
   },
   "devDependencies": {
