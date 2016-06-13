@@ -74,7 +74,7 @@ class ForceLayout : public IForceLayout {
     tree.insertBodies(_bodies);
     auto bodiesCount = _bodies.size();
 
-#pragma omp parallel for
+    #pragma omp parallel for
     for (std::size_t i = 0; i < bodiesCount; ++i) {
       auto body = _bodies[i];
       body->force.reset();
@@ -83,7 +83,7 @@ class ForceLayout : public IForceLayout {
       updateDragForce(body);
     }
 
-#pragma omp parallel for
+    #pragma omp parallel for
     for (std::size_t i = 0; i < bodiesCount; ++i) {
       auto body = _bodies[i];
       updateSpringForce(body);
@@ -95,7 +95,7 @@ class ForceLayout : public IForceLayout {
     double totalV = 0;
     auto bodiesCount = _bodies.size();
 
-#pragma omp parallel for
+    #pragma omp parallel for
     for (std::size_t i = 0; i < bodiesCount; ++i) {
       auto body = _bodies[i];
       double coeff = timeStep / body->mass;
