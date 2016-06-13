@@ -1,6 +1,6 @@
 {
   "name": "forcelayout.cc",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "C++ module for 3d force based graph layout",
   "scripts": {
     "clean": "rm -rf build",
