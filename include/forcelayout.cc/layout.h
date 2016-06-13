@@ -51,8 +51,16 @@ struct LayoutSettings {
   }
 };
 
+class IForceLayout {
+  public:
+  virtual ~IForceLayout() {};
+  virtual IQuadTree *getTree() = 0;
+  virtual double step() = 0;
+  virtual IVector *getBodyPosition(const size_t &nodeId) = 0;
+};
+
 template <size_t N>
-class ForceLayout {
+class ForceLayout : public IForceLayout {
   Graph &graph;
   LayoutSettings _settings;
   Random random;
@@ -221,7 +229,7 @@ public:
    * Performs one iteration of force layout. Returns total movement performed
    * during that step.
    */
-  double step() {
+  virtual double step() {
     accumulate();
 
     double totalMovement = integrate();
@@ -239,8 +247,14 @@ public:
     }
     return search->second;
   }
+
+  virtual IVector *getBodyPosition(const std::size_t &nodeId) {
+    auto body = getBody(nodeId);
+    if (!body) return nullptr;
+    return &(body->pos);
+  }
   
-  QuadTree<N> *getTree() { return &tree; }
+  virtual IQuadTree *getTree() { return &tree; }
 };
 
 #endif
