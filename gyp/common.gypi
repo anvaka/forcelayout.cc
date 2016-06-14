@@ -23,20 +23,37 @@
             'GCC_ENABLE_CPP_EXCEPTIONS': 'YES', # make sure we support exceptions
           },
         }],
+        [ 'OS == "linux" and openmp == "true"', {
+          'all_dependent_settings': {
+            'cflags+' : [ '-fopenmp' ],
+            'link_settings': {
+                'libraries': [
+# TODO: is this enough?
+                  '-lgomp',
+                ],
+              },
+          },
+          'cflags+' : [ '-fopenmp' ],
+            'link_settings': {
+                'libraries': [
+                  '-lgomp',
+                ],
+              },
+        }],
         [ 'OS == "mac" and openmp == "true"', {
 # TODO: consumers have to export CXX=clang-omp++ before they can use this. How to avoid this?
 # TODO: How do I find this library dynamically?
-          "all_dependent_settings": {
+          'all_dependent_settings': {
 # Since we are distributed via headers, we need to make sure that anyone who
 # depends on us with openmp on, gets `-fopenmp` flag:
-            "libraries+": [ "/usr/local/lib/libiomp5.dylib" ],
-            "xcode_settings": {
-              "OTHER_CPLUSPLUSFLAGS+" : [ "-fopenmp"],
+            'libraries+': [ "/usr/local/lib/libiomp5.dylib" ],
+            'xcode_settings': {
+              'OTHER_CPLUSPLUSFLAGS+' : [ '-fopenmp'],
             },
           },
-          "libraries+": [ "/usr/local/lib/libiomp5.dylib" ],
-          "xcode_settings": {
-            "OTHER_CPLUSPLUSFLAGS+" : [ "-fopenmp"],
+          'libraries+': [ '/usr/local/lib/libiomp5.dylib' ],
+          'xcode_settings': {
+            'OTHER_CPLUSPLUSFLAGS+' : [ '-fopenmp'],
           },
         }],
       ],
