@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "nangraph.cc": "^3.1.0",
-    "quadtree.cc": "^5.0.0",
+    "quadtree.cc": "^6.0.0",
     "random.cc": "^3.0.0"
   },
   "devDependencies": {
